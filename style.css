@@ -1,27 +1,27 @@
 body {
   margin: 0;
   font-family: 'Times New Roman', cursive;
-  background: linear-gradient(135deg, #f9d6f9, #d1c4f9);
+  background: linear-gradient(135deg, #6d8fc2, #deebff);
   text-align: center;
   overflow: hidden;
 }
 
 h1 {
-  color: #8b5cf6;
+  color: #232b7a;
   margin: 20px 0;
   text-shadow: 2px 2px #fff;
 }
 
 canvas {
-  background-color: #ffe4f0;
+  background-color: #bbcfed;
   display: block;
   margin: 20px auto;
-  border: 3px solid #f0a6ca;
+  border: 3px solid #124aa1;
   border-radius: 15px;
 }
 
 #score {
   font-size: 20px;
   font-weight: bold;
-  color: #8b5cf6;
+  color: #232b7a;
 }
