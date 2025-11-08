@@ -2,7 +2,7 @@
   position: relative;
   width: 600px;
   height: 200px;
-  background-color: #ffe4e6; /* cute pink background */
+  background-color: #ffe4e6;
   overflow: hidden;
   border: 2px solid #ff69b4;
   margin: 50px auto;
@@ -15,14 +15,14 @@
   left: 50px;
   width: 50px;
   height: 50px;
-  background-color: #ff69b4; /* player pink */
+  background-color: #ff69b4;
   border-radius: 10px;
 }
 
 #obstacle {
   position: absolute;
   bottom: 0;
-  right: 0;
+  right: -30px;
   width: 30px;
   height: 50px;
   background-color: #ff1493;
