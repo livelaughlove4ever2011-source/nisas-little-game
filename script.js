@@ -1,146 +1,111 @@
-//board
-let board;
-let boardWidth = 750;
-let boardHeight = 250;
-let context;
+// board
+const board = document.getElementById("board");
+const context = board.getContext("2d");
+const boardWidth = 750;
+const boardHeight = 250;
+board.width = boardWidth;
+board.height = boardHeight;
 
-//dog
-let dogWidth = 88;
-let dogHeight = 94;
-let dogX = 50;
-let dogY = boardHeight - dogHeight;
-let dogImg;
-
-let dog = {
-    x: dogX,
-    y: dogY,
-    width: dogWidth,
-    height: dogHeight
-};
-
-//obstacles (cactus)
-let obstacleArray = [];
-
-let cactus1Width = 34;
-let cactus2Width = 69;
-let cactus3Width = 102;
-let cactusHeight = 70;
-let cactusX = 700;
-let cactusY = boardHeight - cactusHeight;
-
-let cactus1Img, cactus2Img, cactus3Img;
-
-//physics
-let velocityX = -8; // obstacles moving left
+// doggie
+const dogWidth = 88;
+const dogHeight = 94;
+const dogX = 50;
+const dogY = boardHeight - dogHeight;
 let velocityY = 0;
-let gravity = 0.4;
-
+const gravity = 0.4;
+let dog = { x: dogX, y: dogY, width: dogWidth, height: dogHeight };
+let dogImg = new Image();
+dogImg.src = "52617617-vector-pixel-art-white-background-pixel-dog-for-8-bit-video-games-removebg-preview.png"; 
 let gameOver = false;
 let score = 0;
 
-window.onload = function() {
-    board = document.getElementById("board");
-    board.height = boardHeight;
-    board.width = boardWidth;
-    context = board.getContext("2d");
+// Obstacles
+let obstacles = [];
+const obstacleY = boardHeight - 70;
 
-    //dog image
-    dogImg = new Image();
-    dogImg.src = "./img/dog.png"; // <-- replace with your dog image path
-    dogImg.onload = function() {
-        context.drawImage(dogImg, dog.x, dog.y, dog.width, dog.height);
-    };
+const bone1Width = 34;
+const bone2Width = 69;
+const bone3Width = 102;
 
-    //cactus images
-    cactus1Img = new Image();
-    cactus1Img.src = "./img/cactus1.png";
+let bone1Img = new Image();
+bone1Img.src = "line-icon-bone-isolated-on-white-background-vector-removebg-preview.png;
+let bone2Img = new Image();
+bone2Img.src = "line-icon-bone-isolated-on-white-background-vector-removebg-preview.png";
+let bone3Img = new Image();
+bone3Img.src = "line-icon-bone-isolated-on-white-background-vector-removebg-preview.png";
 
-    cactus2Img = new Image();
-    cactus2Img.src = "./img/cactus2.png";
+const velocityX = -8;
 
-    cactus3Img = new Image();
-    cactus3Img.src = "./img/cactus3.png";
-
-    requestAnimationFrame(update);
-    setInterval(placeObstacle, 1000);
-    document.addEventListener("keydown", moveDog);
-};
+// Controls
+document.addEventListener("keydown", e => {
+  if (gameOver) return;
+  if ((e.code === "Space" || e.code === "ArrowUp") && dog.y === dogY) {
+    velocityY = -10; // jump
+  }
+});
 
 function update() {
-    requestAnimationFrame(update);
-    if (gameOver) return;
+  if (gameOver) return;
+  requestAnimationFrame(update);
+  context.clearRect(0, 0, board.width, board.height);
 
-    context.clearRect(0, 0, board.width, board.height);
+  // Dog
+  velocityY += gravity;
+  dog.y = Math.min(dog.y + velocityY, dogY);
+  context.drawImage(dogImg, dog.x, dog.y, dog.width, dog.height);
 
-    //dog physics
-    velocityY += gravity;
-    dog.y = Math.min(dog.y + velocityY, dogY);
-    context.drawImage(dogImg, dog.x, dog.y, dog.width, dog.height);
+  // Obstacles
+  for (let i = 0; i < obstacles.length; i++) {
+    let obs = obstacles[i];
+    obs.x += velocityX;
+    context.drawImage(obs.img, obs.x, obs.y, obs.width, obs.height);
 
-    //obstacles
-    for (let i = 0; i < obstacleArray.length; i++) {
-        let obs = obstacleArray[i];
-        obs.x += velocityX;
-        context.drawImage(obs.img, obs.x, obs.y, obs.width, obs.height);
-
-        if (detectCollision(dog, obs)) {
-            gameOver = true;
-            dogImg.src = "./img/dog-dead.png"; // optional dead dog image
-            dogImg.onload = function() {
-                context.drawImage(dogImg, dog.x, dog.y, dog.width, dog.height);
-            };
-        }
+    if (detectCollision(dog, obs)) {
+      gameOver = true;
+      alert(`Game Over! Score: ${score}`);
     }
+  }
 
-    //score
-    context.fillStyle = "black";
-    context.font = "20px courier";
-    score++;
-    context.fillText(score, 5, 20);
+  // Score
+  score++;
+  context.fillStyle = "#8b5cf6";
+  context.font = "20px Comic Sans MS";
+  context.fillText(`Score: ${score}`, 10, 25);
 }
 
-function moveDog(e) {
-    if (gameOver) return;
-
-    if ((e.code === "Space" || e.code === "ArrowUp") && dog.y === dogY) {
-        velocityY = -10; // jump
-    } else if (e.code === "ArrowDown" && dog.y === dogY) {
-        // duck (optional)
-    }
-}
-
+// Random obstacle
 function placeObstacle() {
-    if (gameOver) return;
+  if (gameOver) return;
 
-    let obstacle = {
-        img: null,
-        x: cactusX,
-        y: cactusY,
-        width: null,
-        height: cactusHeight
-    };
+  let obs = { img: null, x: boardWidth, y: obstacleY, width: null, height: 70 };
+  const chance = Math.random();
 
-    let chance = Math.random();
+  if (chance > 0.9) {
+    obs.img = bone3Img;
+    obs.width = bone3Width;
+  } else if (chance > 0.7) {
+    obs.img = bone2Img;
+    obs.width = bone2Width;
+  } else if (chance > 0.5) {
+    obs.img = bone1Img;
+    obs.width = bone1Width;
+  } else return;
 
-    if (chance > 0.9) {
-        obstacle.img = cactus3Img;
-        obstacle.width = cactus3Width;
-    } else if (chance > 0.7) {
-        obstacle.img = cactus2Img;
-        obstacle.width = cactus2Width;
-    } else if (chance > 0.5) {
-        obstacle.img = cactus1Img;
-        obstacle.width = cactus1Width;
-    } else return; // no obstacle this time
+  obstacles.push(obs);
 
-    obstacleArray.push(obstacle);
-
-    if (obstacleArray.length > 5) obstacleArray.shift();
+  if (obstacles.length > 5) obstacles.shift();
 }
 
+// Collision detection
 function detectCollision(a, b) {
-    return a.x < b.x + b.width &&
-           a.x + a.width > b.x &&
-           a.y < b.y + b.height &&
-           a.y + a.height > b.y;
+  return (
+    a.x < b.x + b.width &&
+    a.x + a.width > b.x &&
+    a.y < b.y + b.height &&
+    a.y + a.height > b.y
+  );
 }
+
+// Start game
+requestAnimationFrame(update);
+setInterval(placeObstacle, 1000);
