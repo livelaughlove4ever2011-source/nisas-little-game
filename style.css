@@ -1,50 +1,9 @@
-#game {
-  position: relative;
-  width: 600px;
-  height: 200px;
-  background-color: #ffe4e6;
-  overflow: hidden;
-  border: 2px solid #ff69b4;
-  margin: 50px auto;
-  border-radius: 20px;
+body {
+    font-family:'Times New Roman', Courier, monospace;
+    text-align: center;
 }
 
-#player {
-  position: absolute;
-  bottom: 0;
-  left: 50px;
-  width: 50px;
-  height: 50px;
-  background-color: #ff69b4;
-  border-radius: 10px;
-}
-
-#obstacle {
-  position: absolute;
-  bottom: 0;
-  left: 600px; /* start at right side of game container */
-  width: 30px;
-  height: 50px;
-  background-color: #ff1493;
-  border-radius: 5px;
-}
-
-#score {
-  text-align: center;
-  font-family: 'Comic Sans MS', cursive;
-  color: #ff1493;
-  font-weight: bold;
-}
-
-.heart {
-  position: absolute;
-  font-size: 20px;
-  color: #ff69b4;
-  pointer-events: none; /* hearts won’t block clicks */
-  animation: floatUp 2s linear forwards;
-}
-
-@keyframes floatUp {
-  0% { transform: translateY(0) scale(1); opacity: 1; }
-  100% { transform: translateY(-150px) scale(1.2); opacity: 0; }
+#board {
+    background-color: lightblue;
+    border-bottom: 1px solid blue;
 }
