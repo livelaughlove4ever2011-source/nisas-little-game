@@ -22,7 +22,7 @@
 #obstacle {
   position: absolute;
   bottom: 0;
-  right: -30px;
+  left: 600px; /* start at right side of game container */
   width: 30px;
   height: 50px;
   background-color: #ff1493;
