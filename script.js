@@ -1,4 +1,4 @@
-const player = document.getElementById('player');
+onst player = document.getElementById('player');
 const obstacle = document.getElementById('obstacle');
 const scoreDisplay = document.getElementById('score');
 
@@ -11,12 +11,12 @@ function jump() {
   if (isJumping) return;
   isJumping = true;
   let up = 0;
-  const jumpUp = setInterval(() => {
+  const upInterval = setInterval(() => {
     if (up >= 100) {
-      clearInterval(jumpUp);
-      const jumpDown = setInterval(() => {
+      clearInterval(upInterval);
+      const downInterval = setInterval(() => {
         if (up <= 0) {
-          clearInterval(jumpDown);
+          clearInterval(downInterval);
           isJumping = false;
         }
         up -= 5;
@@ -28,7 +28,7 @@ function jump() {
   }, 20);
 }
 
-// Listen for spacebar
+// Spacebar to jump
 document.addEventListener('keydown', e => {
   if (e.code === 'Space') jump();
 });
@@ -36,9 +36,48 @@ document.addEventListener('keydown', e => {
 // Move obstacle
 function moveObstacle() {
   obstaclePos -= 5;
-  if (obstaclePos < -30) {
-    obstaclePos = 600; // reset to right
-    score++;           // increment score
+  if (obstaclePos < -30) { // when off screen
+    obstaclePos = 600;      // reset positiononst player = document.getElementById('player');
+const obstacle = document.getElementById('obstacle');
+const scoreDisplay = document.getElementById('score');
+
+let isJumping = false;
+let score = 0;
+let obstaclePos = 600;
+
+// Jump function
+function jump() {
+  if (isJumping) return;
+  isJumping = true;
+  let up = 0;
+  const upInterval = setInterval(() => {
+    if (up >= 100) {
+      clearInterval(upInterval);
+      const downInterval = setInterval(() => {
+        if (up <= 0) {
+          clearInterval(downInterval);
+          isJumping = false;
+        }
+        up -= 5;
+        player.style.bottom = up + 'px';
+      }, 20);
+    }
+    up += 5;
+    player.style.bottom = up + 'px';
+  }, 20);
+}
+
+// Spacebar to jump
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') jump();
+});
+
+// Move obstacle
+function moveObstacle() {
+  obstaclePos -= 5;
+  if (obstaclePos < -30) { // when off screen
+    obstaclePos = 600;      // reset position
+    score++;
     scoreDisplay.textContent = `Score: ${score}`;
   }
   obstacle.style.left = obstaclePos + 'px';
@@ -55,25 +94,22 @@ function moveObstacle() {
   requestAnimationFrame(moveObstacle);
 }
 
-// Start game loop
 moveObstacle();
+    score++;
+    scoreDisplay.textContent = `Score: ${score}`;
+  }
+  obstacle.style.left = obstaclePos + 'px';
 
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.classList.add("heart");
-  heart.textContent = "❤️";
+  // Collision detection
+  const playerBottom = parseInt(player.style.bottom) || 0;
+  if (obstaclePos < 100 && obstaclePos > 50 && playerBottom < 50) {
+    alert(`Game Over! Your score: ${score}`);
+    obstaclePos = 600;
+    score = 0;
+    scoreDisplay.textContent = `Score: ${score}`;
+  }
 
-  // Random horizontal position
-  heart.style.left = Math.random() * 580 + "px"; // game width ~600px
-  heart.style.bottom = "0px";
-
-  document.body.appendChild(heart);
-
-  // Remove heart after animation
-  setTimeout(() => {
-    heart.remove();
-  }, 2000);
+  requestAnimationFrame(moveObstacle);
 }
 
-// Make a few hearts every second
-setInterval(createHeart, 1000);
+moveObstacle();
