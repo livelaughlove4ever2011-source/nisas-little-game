@@ -57,3 +57,23 @@ function moveObstacle() {
 
 // Start game loop
 moveObstacle();
+
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.textContent = "❤️";
+
+  // Random horizontal position
+  heart.style.left = Math.random() * 580 + "px"; // game width ~600px
+  heart.style.bottom = "0px";
+
+  document.body.appendChild(heart);
+
+  // Remove heart after animation
+  setTimeout(() => {
+    heart.remove();
+  }, 2000);
+}
+
+// Make a few hearts every second
+setInterval(createHeart, 1000);
