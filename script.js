@@ -4,18 +4,19 @@ const scoreDisplay = document.getElementById('score');
 
 let isJumping = false;
 let score = 0;
+let obstaclePos = 600;
 
 // Jump function
 function jump() {
   if (isJumping) return;
   isJumping = true;
   let up = 0;
-  const jumpInterval = setInterval(() => {
-    if (up >= 100) { // jump height
-      clearInterval(jumpInterval);
-      const downInterval = setInterval(() => {
+  const jumpUp = setInterval(() => {
+    if (up >= 100) {
+      clearInterval(jumpUp);
+      const jumpDown = setInterval(() => {
         if (up <= 0) {
-          clearInterval(downInterval);
+          clearInterval(jumpDown);
           isJumping = false;
         }
         up -= 5;
@@ -33,25 +34,26 @@ document.addEventListener('keydown', e => {
 });
 
 // Move obstacle
-let obstacleLeft = 600;
 function moveObstacle() {
-  obstacleLeft -= 5;
-  if (obstacleLeft < -30) {
-    obstacleLeft = 600;
-    score++;
+  obstaclePos -= 5;
+  if (obstaclePos < -30) {
+    obstaclePos = 600; // reset to right
+    score++;           // increment score
     scoreDisplay.textContent = `Score: ${score}`;
   }
-  obstacle.style.left = obstacleLeft + 'px';
+  obstacle.style.left = obstaclePos + 'px';
 
   // Collision detection
-  const playerBottom = parseInt(player.style.bottom);
-  if (obstacleLeft < 100 && obstacleLeft > 50 && playerBottom < 50) {
+  const playerBottom = parseInt(player.style.bottom) || 0;
+  if (obstaclePos < 100 && obstaclePos > 50 && playerBottom < 50) {
     alert(`Game Over! Your score: ${score}`);
-    obstacleLeft = 600;
+    obstaclePos = 600;
     score = 0;
     scoreDisplay.textContent = `Score: ${score}`;
   }
+
   requestAnimationFrame(moveObstacle);
 }
 
+// Start game loop
 moveObstacle();
