@@ -1,27 +1,59 @@
 body {
-  margin: 0;
-  font-family: 'Times New Roman', cursive;
-  background: linear-gradient(135deg, #6d8fc2, #deebff);
-  text-align: center;
-  overflow: hidden;
+    font-family: monospace, sans-serif;
+    background: #ceb9a4;
+    overflow: hidden;
+    transition: background 0.15s;
 }
 
-h1 {
-  color: #232b7a;
-  margin: 20px 0;
-  text-shadow: 2px 2px #fff;
+.container {
+    text-align: center;
+    margin-top: 100px;
 }
 
-canvas {
-  background-color: #bbcfed;
-  display: block;
-  margin: 20px auto;
-  border: 3px solid #124aa1;
-  border-radius: 15px;
+#chaosBtn {
+    padding: 15px 40px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    background: black;
+    color: white;
+    transition: 0.15s;
 }
 
-#score {
-  font-size: 20px;
-  font-weight: bold;
-  color: #232b7a;
+#chaosBtn:hover {
+    transform: scale(1.1);
+}
+
+.shake {
+    animation: shakeScreen 0.7s infinite;
+}
+
+@keyframes shakeScreen {
+    0% { transform: translate(2px, 2px); }
+    25% { transform: translate(-2px, 1px); }
+    50% { transform: translate(3px, -2px); }
+    75% { transform: translate(-3px, 3px); }
+    100% { transform: translate(2px, -1px); }
+}
+
+.emoji {
+    position: absolute;
+    font-size: 55px;
+    animation: floatUp 2s ease-out forwards;
+}
+
+@keyframes floatUp {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-200px); }
+}
+
+.glitch {
+    animation: glitch 0.2s infinite;
+}
+
+@keyframes glitch {
+    0% { text-shadow: 2px 0 red; }
+    50% { text-shadow: -2px 0 blueviolet; }
+    100% { text-shadow: 2px 0 palevioletred; }
 }
